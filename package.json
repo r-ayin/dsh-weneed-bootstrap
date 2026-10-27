@@ -1,6 +1,6 @@
 {
   "name": "@dsh-external/dsh-weneed-bootstrap",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Two-phase We-need anchoring: bootstrap the first request into minimal planning form, then keep a light reminder",
   "private": true,
   "type": "module",
