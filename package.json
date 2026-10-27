@@ -1,46 +1,27 @@
 {
-  "name": "dsh-weneed-bootstrap",
+  "name": "@dsh-external/dsh-weneed-bootstrap",
   "version": "0.1.0",
-  "description": "Two-phase 'We need' chain-of-thought anchoring: a minimal first-turn reasoning protocol promoted back to the full system prompt after the first tool call.",
+  "description": "Two-phase We-need anchoring: bootstrap the first request into minimal planning form, then keep a light reminder",
   "private": true,
   "type": "module",
   "main": "./lib/index.js",
+  "types": "./lib/types/index.d.ts",
   "files": [
     "lib"
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
+  "peerDependencies": {
+    "@deepseek-ai/dsh-llm": ">=0.0.1-rc <2",
+    "@deepseek-ai/dsh-tools": ">=0.0.1-rc <2",
+    "cordis": ">=4.0.0-rc <5",
+    "schemastery": "^3.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.3",
+    "typescript": "^5.9.0"
+  },
   "scripts": {
-    "build": "bash scripts/build.sh"
-  },
-  "exports": {
-    ".": {
-      "default": "./lib/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "dsh": {
-    "bundle": {
-      "patch": "./cordis.patch.yml"
-    }
-  },
-  "author": "r-ayin",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/r-ayin/dsh-weneed-bootstrap.git"
-  },
-  "homepage": "https://github.com/r-ayin/dsh-weneed-bootstrap#readme",
-  "bugs": {
-    "url": "https://github.com/r-ayin/dsh-weneed-bootstrap/issues"
-  },
-  "keywords": [
-    "dsh",
-    "dsh-plugin",
-    "deepseek-harness",
-    "reasoning",
-    "chain-of-thought",
-    "preset"
-  ],
-  "engines": {
-    "node": ">=20"
+    "build": "bash scripts/build.sh",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   }
 }
