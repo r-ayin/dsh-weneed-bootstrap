@@ -1,0 +1,46 @@
+{
+  "name": "dsh-weneed-bootstrap",
+  "version": "0.1.0",
+  "description": "Two-phase 'We need' chain-of-thought anchoring: a minimal first-turn reasoning protocol promoted back to the full system prompt after the first tool call.",
+  "private": true,
+  "type": "module",
+  "main": "./lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "bash scripts/build.sh"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "author": "r-ayin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/r-ayin/dsh-weneed-bootstrap.git"
+  },
+  "homepage": "https://github.com/r-ayin/dsh-weneed-bootstrap#readme",
+  "bugs": {
+    "url": "https://github.com/r-ayin/dsh-weneed-bootstrap/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "reasoning",
+    "chain-of-thought",
+    "preset"
+  ],
+  "engines": {
+    "node": ">=20"
+  }
+}

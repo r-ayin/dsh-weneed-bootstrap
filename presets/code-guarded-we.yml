@@ -1,0 +1,25 @@
+# Optional preset overlay: reasoning discipline for a code-guarded style preset.
+#
+# Paste into the persona config of the matching preset entry in
+# ~/.dsh/profiles/web/cordis.patch.yml.
+# NOTE: DSH 0.2.0+ no longer scans ~/.dsh/.agent-presets/ - edits there are dead.
+#
+# 1) persona prefix - anchor the opening phrase as the first sentence:
+#
+#    prefix: >-
+#      When you think, start with "We need ...". Never open a reasoning
+#      block with "Let me".
+#      (then the rest of the original prefix)
+#
+# 2) persona suffix - commitment discipline plus a near-field reminder:
+
+suffix: >-
+  ## Commitment (reasoning discipline)
+
+  Once you have verified a step, do not revisit it. Do not restate a
+  fact you already established, do not say "but wait", and do not
+  re-derive the same value. Plan once in at most three short lines,
+  then execute that plan and answer. If you notice yourself looping,
+  stop and answer.
+
+  Reminder: every reasoning block opens with "We need", not "Let me".

@@ -1,0 +1,9 @@
+# dsh-weneed-bootstrap - bundle patch
+- insert:
+    - id: dsh-weneed-bootstrap
+      name: 'dsh-weneed-bootstrap'
+      config:
+        enabled: true
+        presetId: code-guarded   # prefix match: code-guarded, code-guarded-we, ...
+        openingPhrase: We need
+        avoidPhrase: Let me
