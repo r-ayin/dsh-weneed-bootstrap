@@ -32,6 +32,17 @@ DeepSeek V4.1 在完整预设（大 persona + 全工具面 + 运行时上下文�
 4. **门禁**：只对 `presetId` 前缀匹配的预设生效（默认 `code-guarded`，因此同时覆盖
    `code-guarded` 与 `code-guarded-we`），其它预设零影响。
 
+## 两层锚定（v0.1.1）
+
+首轮极简只管「进入 We need 轨迹」，撑不住之后的长任务。所以插件现在是两层：
+
+| 层 | 时机 | 内容 |
+|---|---|---|
+| L1 首轮极简 | 会话第一个请求 | 整段 system prompt 压成推理协议（约 500 字符） |
+| L2 常驻近场锚 | **每一轮**（含晋升之后） | 提示词末尾追加一行 `Reasoning format for this turn: open the thinking block with "We need". Not "Let me", not "We have", not "The user".` |
+
+**为什么必须 L2**：晋升后完整提示词约 12 万字符，persona 里的提醒被稀释到几乎无权重。实测某长会话：首轮、第 2 步都是 `We need`，第 3 步起退化为 `We have …` / `The …` / `Now …`（54 个 reasoning 块只有 2 个以 We need 开头）。L2 把锚点放在提示词最后 100 字符内，recency 最强。
+
 ## 实测数据
 
 自测（同一台 DSH，`deepseek-v4.1-flash`，全新会话）：
