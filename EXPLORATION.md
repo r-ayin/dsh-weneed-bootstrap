@@ -6,10 +6,10 @@
 
 | 项 | 位置 | 状态 |
 |---|---|---|
-| 插件 dsh-weneed-bootstrap | `/home/ubuntu/coding/dsh-weneed-bootstrap`（已注入，host 生效） | v0.1.2 |
+| 插件 dsh-weneed-bootstrap | `<repo-dir>`（已注入，host 生效） | v0.1.2 |
 | GitHub | https://github.com/r-ayin/dsh-weneed-bootstrap （main，v0.1.0/v0.1.1/v0.1.2 三个 Release，各带 tgz） | 公开 |
 | 插件市场 | PR https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/9785 （条目 `data/plugins/r-ayin__dsh-weneed-bootstrap.yml`，tarball 指 v0.1.2） | 待维护者合并 |
-| 实验性插件 dsh-weneed-step-nudge | `/home/ubuntu/coding/dsh-weneed-step-nudge`（已卸载，patch 标记 disabled） | 保留代码，未启用 |
+| 实验性插件 dsh-weneed-step-nudge | `<sibling-plugin-dir>`（已卸载，patch 标记 disabled） | 保留代码，未启用 |
 | 宿主修复 | TMPDIR 从被删的 `/run/user/1000/qoder-remote-worker-*` 改为 `~/.dsh/tmp`；crontab 每分钟自愈 | 已生效 |
 
 ## 2. 全部实测数据（同一会话 7a334130，同一预设 code-guarded，V4.1-flash）
@@ -80,7 +80,7 @@
 
 ## 6. 红线
 
-- 不改 `/home/ubuntu/dsh-install/node_modules/@deepseek-ai/dsh*` 的发行版文件，除非写进 `patches/` 并附回滚。
+- 不改 `<dsh-install>/node_modules/@deepseek-ai/dsh*` 的发行版文件，除非写进 `patches/` 并附回滚。
 - 不在 run_code 内直接改正在服务的插件 fiber（历史上有自死锁：dev_inject/reload 在 dispatch 内调用会挂住会话，需重启）。
 - 任何"注入消息"的方案必须先确认是否切 turn（本次踩过）。
 - 用户要求：结论必须来自本机日志实测，不接受主观印象；统计按模型归属分开（V4.1 与其它模型不可混算）。
@@ -91,3 +91,16 @@
 - [ ] 若可行：实现 `minimalTools` 首轮收窄并测 5+ 块
 - [ ] 若不可行：C 路线原型（每轮冷启动编排脚本）
 - [ ] 无论哪条：把 `Work order` 的 UNKNOWNS 从"留空槽"改为"列出上一块未解决项"（当前是模板，未真正填内容）
+
+## 8. 复核（2026-10-27 18:00，按模型/步号拆分重测）
+
+**A 路线在 code-guarded 上已被数据否定，无需再侦查。**
+
+- 会话 7a334130 全部 19 个 `request/header`（initial/series/resume/change）的 `tools` 都只有 **1 个：`run_code`**（PTC 模式）。工具面从一开始就是"极简 schema"，不存在 40+ → 2 的收窄空间。
+- 在这个已经极简的工具面上，V4.1-flash 命中率仍是 **3/270 = 1.1%**；step 1 为 **0/29**，3 次命中全在 step ≥ 2（step 2/5/13），内容都是"汇报/复测结论"一类。
+- 插件侧确有过滤点（`system-prompt/assemble` waterfall 返回的 `tools` 原样进入 `dsh-agent-loop` 的 `buildRequest(…, assembly.tools, …)`，不用改核心），但只对 native 模式预设有意义；PTC 模式下收窄是空操作。
+- §2 表中"基线 208 / 0"与新口径（读全部 .zstd、只计非空块）的 270 / 3 不一致；"首轮极简 2/2"不在本会话的 step 1 里，出处会话需补注。
+
+**判断**：工具面、禁令、位置、场景重建都已试过且都 ≈0。在 V4.1-flash 上这个起手式是 ~0.1–1% 的稀有残留，不是可被提示词或请求形态稳定唤起的模式。建议走 **D（接受边界）**；若必须保证，只能走后处理（不依赖模型自发）。
+
+`scripts/measure-openers.py` 已改：读目录下全部 .zstd、多会话、`--model` 过滤、按模型 × before/after × step1/step2+ 分桶、n<5 自动标注。
